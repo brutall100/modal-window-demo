@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modal Window Demo</title>
+  <meta name="description" content="An accessible, animated modal window built with the native HTML dialog element, CSS and vanilla JavaScript.">
+  <meta name="theme-color" content="#FAF3E1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1C1916" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+
+  <!-- Runs before the first paint so the saved theme never flashes -->
+  <script src="js/theme-init.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Live background: floating "windows" -->
+  <div class="backdrop-scene" aria-hidden="true">
+    <span class="float-win"></span>
+    <span class="float-win"></span>
+    <span class="float-win"></span>
+    <span class="float-win"></span>
+    <span class="float-win"></span>
+    <span class="float-win"></span>
+    <span class="float-win"></span>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="#main" aria-label="Modal Window Demo, back to top">
+      <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="3" y="5" width="26" height="22" rx="4" class="icon-frame"/>
+        <path d="M3 11h26" class="icon-line"/>
+        <circle cx="8" cy="8" r="1.4" class="icon-dot"/>
+        <circle cx="12" cy="8" r="1.4" class="icon-dot"/>
+      </svg>
+      <span>modal<span class="brand-accent">.</span>demo</span>
+    </a>
+
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.5"/>
+        <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/>
+      </svg>
+    </button>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Native &lt;dialog&gt; · Vanilla JS · 0 libraries</p>
+        <h1>Click it. <span class="pop">Pop!</span><br>A window appears.</h1>
+        <p class="lead">
+          A small study of the modal window: the box that pops up on top of a page,
+          waits for your answer and then politely disappears. It closes with
+          <kbd>Esc</kbd>, the <kbd>×</kbd> button or a click outside.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button" data-open="modal-hello">
+            <span>Open the modal</span>
+            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="8" width="13" height="13" rx="2.5" class="btn-icon-back"/>
+              <rect x="8" y="3" width="13" height="13" rx="2.5" class="btn-icon-front"/>
+            </svg>
+          </button>
+          <a class="btn btn-ghost" href="https://github.com/brutall100/modal-window-demo">View the code</a>
+        </div>
+      </div>
+
+      <!-- Decorative stack of windows -->
+      <div class="hero-art" aria-hidden="true">
+        <div class="stack-win stack-win--back"></div>
+        <div class="stack-win stack-win--mid"></div>
+        <div class="stack-win stack-win--front">
+          <div class="win-bar"><i></i><i></i><i></i></div>
+          <div class="win-body">
+            <b>Hello!</b>
+            <span class="skeleton"></span>
+            <span class="skeleton skeleton--short"></span>
+            <span class="fake-btn">OK</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats" aria-label="Project in numbers">
+      <div class="stat reveal">
+        <span class="stat-num" data-count="3">3</span>
+        <span class="stat-label">ways to close</span>
+      </div>
+      <div class="stat reveal">
+        <span class="stat-num" data-count="3">3</span>
+        <span class="stat-label">modal examples</span>
+      </div>
+      <div class="stat reveal">
+        <span class="stat-num" data-count="0">0</span>
+        <span class="stat-label">dependencies</span>
+      </div>
+      <div class="stat reveal">
+        <span class="stat-num" data-count="100" data-suffix="%">100%</span>
+        <span class="stat-label">keyboard friendly</span>
+      </div>
+    </section>
+
+    <!-- Demos -->
+    <section class="demos" aria-labelledby="demos-title">
+      <h2 id="demos-title" class="section-title reveal">Try three kinds of modals</h2>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="win-bar"><i></i><i></i><i></i><span>info.window</span></div>
+          <div class="card-body">
+            <h3>Say hello</h3>
+            <p>The classic: a short message and one way out. This is the original version of the project.</p>
+            <button class="btn btn-small" type="button" data-open="modal-hello">Open info</button>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="win-bar"><i></i><i></i><i></i><span>confirm.window</span></div>
+          <div class="card-body">
+            <h3>Are you sure?</h3>
+            <p>A confirm dialog with two choices. Focus starts on the safe button.</p>
+            <button class="btn btn-small" type="button" data-open="modal-confirm">Open confirm</button>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="win-bar"><i></i><i></i><i></i><span>form.window</span></div>
+          <div class="card-body">
+            <h3>Join the list</h3>
+            <p>A modal with a real form, a label and validation. Nothing is sent anywhere.</p>
+            <button class="btn btn-small" type="button" data-open="modal-form">Open form</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how" aria-labelledby="how-title">
+      <h2 id="how-title" class="section-title reveal">How it works</h2>
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step-num" aria-hidden="true">01</span>
+          <div>
+            <h3>The browser does the hard part</h3>
+            <p><code>dialog.showModal()</code> puts the window on top, keeps the focus inside it and makes <kbd>Esc</kbd> close it.</p>
+          </div>
+        </li>
+        <li class="step reveal">
+          <span class="step-num" aria-hidden="true">02</span>
+          <div>
+            <h3>A click outside closes it</h3>
+            <p>If the click lands on the dialog itself and not on its content, it was on the dark backdrop, so we close.</p>
+          </div>
+        </li>
+        <li class="step reveal">
+          <span class="step-num" aria-hidden="true">03</span>
+          <div>
+            <h3>CSS makes it pop</h3>
+            <p>The window grows from 92% to 100% and fades in. Only <code>transform</code> and <code>opacity</code> move, so it stays smooth.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Made by <a href="https://github.com/brutall100">brutall100</a> · MIT License</p>
+  </footer>
+
+  <!-- Modals -->
+  <dialog class="modal" id="modal-hello" aria-labelledby="modal-hello-title">
+    <div class="modal-inner">
+      <div class="win-bar"><i></i><i></i><i></i><span>hello.window</span></div>
+      <button class="modal-close" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="modal-body">
+        <p class="modal-emoji" aria-hidden="true">👋</p>
+        <h2 id="modal-hello-title">Hello!</h2>
+        <p>You opened a modal window. Now try to close it with <kbd>Esc</kbd>, the <kbd>×</kbd> button or a click on the dark area.</p>
+        <button class="btn btn-primary" type="button" data-close>Got it</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="modal-confirm" aria-labelledby="modal-confirm-title" aria-describedby="modal-confirm-desc">
+    <div class="modal-inner">
+      <div class="win-bar"><i></i><i></i><i></i><span>confirm.window</span></div>
+      <button class="modal-close" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="modal-body">
+        <h2 id="modal-confirm-title">Delete this photo?</h2>
+        <p id="modal-confirm-desc">The photo of the sleepy cat will be gone forever. (Not really, this is a demo.)</p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" type="button" data-close autofocus>Cancel</button>
+          <button class="btn btn-primary" type="button" data-close data-toast="Photo deleted. Just kidding, the cat is safe.">Delete</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="modal-form" aria-labelledby="modal-form-title">
+    <div class="modal-inner">
+      <div class="win-bar"><i></i><i></i><i></i><span>form.window</span></div>
+      <button class="modal-close" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="modal-body">
+        <h2 id="modal-form-title">Join the list</h2>
+        <p>Get one email when a new tiny project is out. Demo only, nothing is saved.</p>
+        <form class="modal-form" id="signup-form" novalidate>
+          <label for="signup-email">Email address</label>
+          <input id="signup-email" name="email" type="email" autocomplete="email" placeholder="alex@example.com" required aria-describedby="signup-error">
+          <p class="form-error" id="signup-error" aria-live="polite"></p>
+          <button class="btn btn-primary" type="submit">Sign me up</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
